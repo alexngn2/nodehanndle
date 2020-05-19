@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Eat-Da-Burger</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" 
+	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" 
+	crossorigin="anonymous">
+</head>
+
+<body>
+<div class="jumbotron text-center">
+  <h1 class="display-5">Eat Da Burger!</h1>
+  <p class="lead">Eat-Da-Burger! is a restaurant app that lets users input the names of burgers they'd like to eat.</p>
+  <hr class="my-1">
+</div>
+	{{{ body }}}
+<script>
+	// Make sure we wait to attach our handlers until the DOM is fully loaded.
+	document.querySelectorAll('.change-devoured').forEach(button => {
+		button.addEventListener('click', function (event) {
+			// find the value from the dom element
+			const id = this.getAttribute('data-id')
+			let newsleep = this.getAttribute('data-devoured')
+			// toggle value from the element
+			if(newsleep === 'true') newsleep = 'false'
+			else newsleep = 'true'
+			// make a put request to update the value
+			fetch(`/api/burgers/${id}`, {
+				method: 'PUT',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ devoured: newsleep })
+			}).then(response => {
+				if (response.ok) location.reload()
+				console.log(response)
+			})
+		})
+	})
+
+	document.getElementById('create-form').addEventListener('submit', event => {
+		event.preventDefault()
+		// read value from the client side 
+		const newBurger = {
+			name: document.getElementById('burgerName').value.trim(),
+			devoured: false
+		}
+		// create new burger
+		fetch(`/api/burgers`, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(newBurger)
+		}).then(response => {
+			console.log(response)
+			if (response.ok) location.reload()
+		})
+	})
+</script>
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" 
+integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" 
+crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" 
+integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" 
+crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" 
+integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" 
+crossorigin="anonymous"></script>
+
+</body>
+
+</html>

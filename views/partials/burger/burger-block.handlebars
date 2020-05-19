@@ -1,0 +1,17 @@
+<li class="p-1">
+
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      {{burger_name}}
+    </div>
+    <div class="col">
+		<button class="btn btn-primary change-devoured" data-id="{{id}}" data-devoured="{{devoured}}">
+			{{#if devoured}}Order Another One!{{else}}Devour it!{{/if}}
+		</button>
+    </div>
+  </div>
+</div>
+
+</li>
